@@ -1,3 +1,82 @@
 body {
-    background-color: bisque;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.container {
+    border-radius: 16px;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(0 0% 25%);
+
+}
+
+#display {
+    background-color: antiquewhite;
+    width: 240px;
+    height: 80px;
+    border: none;
+    border-radius: 12px;
+    margin: 10px 0;
+    outline: none;
+}
+
+button {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 16px;
+    border: none;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.number,
+.decimal {
+    background-color: hsl(0 0% 40%);
+}
+
+.clear,
+.erase,
+.sign {
+    background-color: hsl(0 0% 60%);
+}
+
+.number:active,
+.decimal:active,
+.clear:active,
+.erase:active,
+.sign:active {
+    background-color: hsl(0 0% 75%);
+    color: black;
+}
+
+.operator {
+    background-color: hsl(39, 97%, 57%);
+}
+
+.operator:focus,
+.equal:focus {
+    background-color: hsl(39, 97%, 77%);
+    color: black;
+}
+
+.equal {
+    background-color: hsl(39, 97%, 57%);
+    width: 114px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    color: white;
 }
