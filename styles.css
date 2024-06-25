@@ -18,7 +18,7 @@ body {
 
 }
 
-#display {
+#output {
     background-color: antiquewhite;
     width: 240px;
     height: 80px;
@@ -26,6 +26,10 @@ body {
     border-radius: 12px;
     margin: 10px 0;
     outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 button {
@@ -79,4 +83,14 @@ button {
     border: none;
     font-size: 20px;
     color: white;
+}
+
+.current {
+    font-size: 35px;
+    padding: 4px;
+}
+
+.previous {
+    font-size: 20px;
+    padding: 4px;
 }
