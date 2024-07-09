@@ -1,65 +1,129 @@
-let previousDisplay = document.querySelector(".previous");
-let currentDisplay = document.querySelector(".current");
+const previousDisplay = document.querySelector(".previous");
+const currentDisplay = document.querySelector(".current");
 
-const clearScreen = document.querySelector(".clear");
-const eraseLeft = document.querySelector(".erase");
-
-const signButton = document.querySelector(".sign");
-const decimalButton = document.querySelector(".decimal");
-
-const numberButtons = document.querySelectorAll(".number");
-const operatorButtons = document.querySelectorAll(".operator");
-const equalButton = document.querySelector(".equal");
+const numBtn = document.querySelectorAll(".number");
+const operatorBtn = document.querySelectorAll(".operator");
+const allClear = document.querySelector(".clear");
+const deleteLeft = document.querySelector(".erase");
+const sign = document.querySelector(".sign");
+const decimalPoint = document.querySelector(".decimal");
+const equals = document.querySelector(".equals");
 
 
-let previousValue = "";
-let currentValue = "";
-let operator = undefined;
+let firstNum = "";
+let secondNum = "";
+let isFirstNum = false;
+let isSecondNum = false;
+let operator = "";
+let result = "";
 
 
-// for (let numChoice of numberButtons) {
-//     numChoice.addEventListener("click", (e) => {
-//         display(e.target.textContent);
-//         currentOperand.textContent = `= ${currentValue}`;
-//     })
-// }
-
-for (let numChoice of numberButtons) {
-    numChoice.addEventListener("click", (e) => {
-        const value = numChoice.textContent;
-        display(value);
-        currentDisplay.textContent = `${currentValue}`;
-    })
-}
-
-for (let operatorChoice of operatorButtons) {
-    operatorChoice.addEventListener("click", (e) => {
-        const opChoice = operatorChoice.textContent;
-        opDisplay(opChoice);
-        previousDisplay.textContent = `${previousValue} ${opChoice} ${currentValue}`;
-        currentDisplay.textContent = currentValue;
-    })
-}
-
-
-function display(value) {
-    if (currentValue.length < 10) {
-        currentValue += value;
-    }
-}
-
-
-function opDisplay(opChoice) {
-    operator = opChoice;
-    previousValue = currentValue;
-    currentValue = "";
-}
-
-
-clearScreen.addEventListener("click", function () {
-    previousValue = "";
-    currentValue = "";
-    operator = undefined;
+allClear.addEventListener("click", () => {
+    firstNum = "";
+    secondNum = "";
+    isFirstNum = false;
+    isSecondNum = false;
+    operator = "";
+    result = "";
     previousDisplay.textContent = "";
     currentDisplay.textContent = "";
 })
+
+deleteLeft.addEventListener("click", () => {
+    if (firstNum !== "") {
+        firstNum = firstNum.toString().slice(0, -1);
+        currentDisplay.textContent = firstNum;
+    }
+    if (secondNum !== "" && operator !== "") {
+        secondNum = secondNum.toString().slice(0, -1);
+        currentDisplay.textContent = secondNum;
+    }
+})
+
+
+sign.addEventListener("click", () => {
+    if (firstNum !== "") {
+        result = -firstNum;
+        firstNum = result;
+    }
+    currentDisplay.textContent = result;
+})
+
+
+
+
+for (let number of numBtn) {
+    number.addEventListener("click", () => {
+        const numValue = number.dataset.value;
+        console.log(numValue);
+        if (isFirstNum === false) {
+            getFirstNum(numValue);
+        }
+        if (isSecondNum === false) {
+            getSecondNum(numValue);
+        }
+    })
+}
+
+function getFirstNum(num) {
+    if (firstNum.length < 10) {
+        currentDisplay.textContent = "";
+        firstNum += num;
+        currentDisplay.textContent = firstNum;
+    }
+}
+
+function getSecondNum(num) {
+    if (firstNum !== "" && operator !== "" && secondNum.length < 10) {
+        currentDisplay.textContent = "";
+        secondNum += num;
+        currentDisplay.textContent = secondNum;
+    }
+}
+
+function getOperator() {
+    for (let opChoice of operatorBtn) {
+        opChoice.addEventListener("click", () => {
+            operator = opChoice.dataset.value;
+            console.log(operator);
+            isFirstNum = true;
+            previousDisplay.textContent = `${firstNum} ${operator}`;
+        })
+    }
+}
+getOperator();
+
+
+function calculate() {
+    equals.addEventListener("click", () => {
+        currentDisplay.textContent = "";
+        firstNum = parseInt(firstNum);
+        secondNum = parseInt(secondNum);
+        if (operator === "+") {
+            result = firstNum + secondNum;
+
+        } else if (operator === "-") {
+            result = firstNum - secondNum;
+
+        } else if (operator === "×") {
+            result = firstNum * secondNum;
+
+        } else if (operator === "÷") {
+            result = firstNum / secondNum;
+        }
+        previousDisplay.textContent = `${firstNum} ${operator} ${secondNum}`;
+        currentDisplay.textContent = `= ${result}`;
+        firstNum = result;
+        secondNum = "";
+    })
+    if (result !== "" && isFirstNum === true) {
+        firstNum = "";
+        secondNum = "";
+        isFirstNum = false;
+        isSecondNum = false;
+        operator = "";
+        result = "";
+        previousDisplay.textContent = "";
+    }
+}
+calculate();
