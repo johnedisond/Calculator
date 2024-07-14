@@ -14,6 +14,7 @@ let firstNum = "";
 let secondNum = "";
 let isFirstNum = false;
 let isSecondNum = false;
+let currentValue = "";
 let operator = "";
 let result = "";
 
@@ -23,6 +24,7 @@ allClear.addEventListener("click", () => {
     secondNum = "";
     isFirstNum = false;
     isSecondNum = false;
+    currentValue = "";
     operator = "";
     result = "";
     previousDisplay.textContent = "";
@@ -31,11 +33,12 @@ allClear.addEventListener("click", () => {
 
 deleteLeft.addEventListener("click", () => {
     if (firstNum !== "") {
-        firstNum = firstNum.toString().slice(0, -1);
+        firstNum = firstNum.slice(0, -1);
         currentDisplay.textContent = firstNum;
+
     }
-    if (secondNum !== "" && operator !== "") {
-        secondNum = secondNum.toString().slice(0, -1);
+    if (operator !== "" && secondNum !== "") {
+        secondNum = secondNum.slice(0, -1);
         currentDisplay.textContent = secondNum;
     }
 })
@@ -46,10 +49,26 @@ sign.addEventListener("click", () => {
         result = -firstNum;
         firstNum = result;
     }
+    if (firstNum !== "" && secondNum !== "" && operator !== "") {
+        result = -result;
+    }
     currentDisplay.textContent = result;
 })
 
+function getDecimal() {
+    decimalPoint.addEventListener("click", () => {
+        if (!firstNum.includes(".")) {
+            firstNum += ".";
+            currentDisplay.textContent = `${firstNum}`;
 
+        }
+        if (operator !== "" && !secondNum.includes(".")) {
+            secondNum += ".";
+            currentDisplay.textContent = `${secondNum}`;
+        }
+    })
+}
+getDecimal();
 
 
 for (let number of numBtn) {
@@ -67,7 +86,6 @@ for (let number of numBtn) {
 
 function getFirstNum(num) {
     if (firstNum.length < 10) {
-        currentDisplay.textContent = "";
         firstNum += num;
         currentDisplay.textContent = firstNum;
     }
@@ -75,7 +93,6 @@ function getFirstNum(num) {
 
 function getSecondNum(num) {
     if (firstNum !== "" && operator !== "" && secondNum.length < 10) {
-        currentDisplay.textContent = "";
         secondNum += num;
         currentDisplay.textContent = secondNum;
     }
@@ -94,36 +111,43 @@ function getOperator() {
 getOperator();
 
 
-function calculate() {
+function operate() {
+    firstNum = Number(firstNum);
+    secondNum = Number(secondNum);
+
+    if (operator === "+") {
+        result = firstNum + secondNum;
+
+    } else if (operator === "-") {
+        result = firstNum - secondNum;
+
+    } else if (operator === "×") {
+        result = firstNum * secondNum;
+
+    } else if (operator === "÷") {
+        result = firstNum / secondNum;
+    }
+    resultAns();
+}
+
+
+
+function resultAns() {
     equals.addEventListener("click", () => {
-        currentDisplay.textContent = "";
-        firstNum = parseInt(firstNum);
-        secondNum = parseInt(secondNum);
-        if (operator === "+") {
-            result = firstNum + secondNum;
-
-        } else if (operator === "-") {
-            result = firstNum - secondNum;
-
-        } else if (operator === "×") {
-            result = firstNum * secondNum;
-
-        } else if (operator === "÷") {
-            result = firstNum / secondNum;
+        if (firstNum !== "" && operator !== "" && secondNum !== "") {
+            operate();
+            previousDisplay.textContent = `${firstNum} ${operator} ${secondNum}`;
+            currentDisplay.textContent = checkAnsLength(result);
         }
-        previousDisplay.textContent = `${firstNum} ${operator} ${secondNum}`;
-        currentDisplay.textContent = `= ${result}`;
-        firstNum = result;
+        firstNum = checkAnsLength(result);
         secondNum = "";
     })
-    if (result !== "" && isFirstNum === true) {
-        firstNum = "";
-        secondNum = "";
-        isFirstNum = false;
-        isSecondNum = false;
-        operator = "";
-        result = "";
-        previousDisplay.textContent = "";
-    }
+
 }
-calculate();
+resultAns();
+
+
+function checkAnsLength() {
+    return Math.round(result * 1000) / 1000;
+
+}
