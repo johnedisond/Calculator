@@ -61,8 +61,8 @@ function getDecimal() {
         if (!firstNum.includes(".")) {
             firstNum += ".";
             currentDisplay.textContent = `${firstNum}`;
-
-        } else if (!secondNum.includes(".")) {
+        }
+        if (operator !== "" && !secondNum.includes(".")) {
             secondNum += ".";
             currentDisplay.textContent = `${secondNum}`;
         }
