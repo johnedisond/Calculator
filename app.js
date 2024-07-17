@@ -32,10 +32,9 @@ allClear.addEventListener("click", () => {
 })
 
 deleteLeft.addEventListener("click", () => {
-    if (firstNum !== "") {
+    if (firstNum !== "" && operator === "") {
         firstNum = firstNum.slice(0, -1);
         currentDisplay.textContent = firstNum;
-
     }
     if (operator !== "" && secondNum !== "") {
         secondNum = secondNum.slice(0, -1);
@@ -49,20 +48,21 @@ sign.addEventListener("click", () => {
         result = -firstNum;
         firstNum = result;
 
-    } else if (operator !== "" && secondNum !== "") {
+    }
+    if (operator !== "" && secondNum !== "") {
         result = -secondNum;
         secondNum = result;
     }
-    // currentDisplay.textContent = result;
+    currentDisplay.textContent = result;
 })
 
 function getDecimal() {
     decimalPoint.addEventListener("click", () => {
-        if (!firstNum.includes(".")) {
+        if (!firstNum.includes(".") || firstNum === -firstNum) {
             firstNum += ".";
             currentDisplay.textContent = `${firstNum}`;
         }
-        if (operator !== "" && !secondNum.includes(".")) {
+        if (operator !== "" && !secondNum.includes(".") || secondNum === -secondNum) {
             secondNum += ".";
             currentDisplay.textContent = `${secondNum}`;
         }
@@ -111,7 +111,7 @@ function getOperator() {
 getOperator();
 
 
-function operate() {
+function calculate() {
     firstNum = Number(firstNum);
     secondNum = Number(secondNum);
 
@@ -127,14 +127,14 @@ function operate() {
     } else if (operator === "÷") {
         result = firstNum / secondNum;
     }
-    // resultAns();
+
 }
 
 
 
-function resultAns() {
+function operate() {
     equals.addEventListener("click", () => {
-        operate();
+        calculate();
         currentValue = checkAnsLength().toString();
         firstNum = firstNum.toString();
         secondNum = secondNum.toString();
@@ -146,6 +146,11 @@ function resultAns() {
         } else if (firstNum !== "" && operator !== "" && secondNum !== "") {
             previousDisplay.textContent = `${firstNum} ${operator} ${secondNum}`;
             currentDisplay.textContent = currentValue;
+
+        }
+        if (secondNum === "0") {
+            previousDisplay.textContent = "";
+            currentDisplay.textContent = "Math.error";
         }
         firstNum = currentValue;
         secondNum = "";
@@ -153,7 +158,7 @@ function resultAns() {
     })
 
 }
-resultAns();
+operate();
 
 
 function checkAnsLength() {
