@@ -48,11 +48,12 @@ sign.addEventListener("click", () => {
     if (firstNum !== "") {
         result = -firstNum;
         firstNum = result;
+
+    } else if (operator !== "" && secondNum !== "") {
+        result = -secondNum;
+        secondNum = result;
     }
-    if (firstNum !== "" && secondNum !== "" && operator !== "") {
-        result = -result;
-    }
-    currentDisplay.textContent = result;
+    // currentDisplay.textContent = result;
 })
 
 function getDecimal() {
@@ -61,8 +62,7 @@ function getDecimal() {
             firstNum += ".";
             currentDisplay.textContent = `${firstNum}`;
 
-        }
-        if (operator !== "" && !secondNum.includes(".")) {
+        } else if (!secondNum.includes(".")) {
             secondNum += ".";
             currentDisplay.textContent = `${secondNum}`;
         }
@@ -127,20 +127,29 @@ function operate() {
     } else if (operator === "÷") {
         result = firstNum / secondNum;
     }
-    resultAns();
+    // resultAns();
 }
 
 
 
 function resultAns() {
     equals.addEventListener("click", () => {
-        if (firstNum !== "" && operator !== "" && secondNum !== "") {
-            operate();
+        operate();
+        currentValue = checkAnsLength().toString();
+        firstNum = firstNum.toString();
+        secondNum = secondNum.toString();
+
+        if (currentValue.length > 11) {
+            previousDisplay.textContent = "";
+            currentDisplay.textContent = "Error";
+
+        } else if (firstNum !== "" && operator !== "" && secondNum !== "") {
             previousDisplay.textContent = `${firstNum} ${operator} ${secondNum}`;
-            currentDisplay.textContent = checkAnsLength(result);
+            currentDisplay.textContent = currentValue;
         }
-        firstNum = checkAnsLength(result);
+        firstNum = currentValue;
         secondNum = "";
+
     })
 
 }
@@ -149,5 +158,4 @@ resultAns();
 
 function checkAnsLength() {
     return Math.round(result * 1000) / 1000;
-
 }
