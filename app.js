@@ -14,21 +14,64 @@ let firstNum = "";
 let secondNum = "";
 let isFirstNum = false;
 let isSecondNum = false;
-let currentValue = "";
 let operator = "";
 let result = "";
 
+const disableBtn = () => {
+    for (let nums of numBtn) {
+        nums.disabled = true;
+    }
+    for (let op of operatorBtn) {
+        op.disabled = true;
+    }
+    equals.disabled = true;
+    deleteLeft.disabled = true;
+    sign.disabled = true;
+    decimalPoint.disabled = true;
+}
+
+const disabledColor = () => {
+    for (let nums of numBtn) {
+        nums.classList.add("disableNums");
+    }
+    for (let op of operatorBtn) {
+        op.classList.add("disableFunc");
+    }
+    deleteLeft.classList.add("disableNums");
+    sign.classList.add("disableNums");
+    decimalPoint.classList.add("disableNums");
+    equals.classList.add("disableFunc");
+}
 
 allClear.addEventListener("click", () => {
     firstNum = "";
     secondNum = "";
     isFirstNum = false;
     isSecondNum = false;
-    currentValue = "";
     operator = "";
     result = "";
     previousDisplay.textContent = "";
     currentDisplay.textContent = "";
+    for (let nums of numBtn) {
+        nums.classList.remove("disableNums");
+    }
+    for (let op of operatorBtn) {
+        op.classList.remove("disableFunc");
+    }
+    deleteLeft.classList.remove("disableNums");
+    sign.classList.remove("disableNums");
+    decimalPoint.classList.remove("disableNums");
+    equals.classList.remove("disableFunc");
+    for (let nums of numBtn) {
+        nums.disabled = false;
+    }
+    for (let op of operatorBtn) {
+        op.disabled = false;
+    }
+    equals.disabled = false;
+    deleteLeft.disabled = false;
+    sign.disabled = false;
+    decimalPoint.disabled = false;
 })
 
 deleteLeft.addEventListener("click", () => {
@@ -44,10 +87,9 @@ deleteLeft.addEventListener("click", () => {
 
 
 sign.addEventListener("click", () => {
-    if (firstNum !== "") {
+    if (firstNum !== "" && operator === "") {
         result = -firstNum;
         firstNum = result;
-
     }
     if (operator !== "" && secondNum !== "") {
         result = -secondNum;
@@ -56,19 +98,19 @@ sign.addEventListener("click", () => {
     currentDisplay.textContent = result;
 })
 
-function getDecimal() {
-    decimalPoint.addEventListener("click", () => {
-        if (!firstNum.includes(".") || firstNum === -firstNum) {
-            firstNum += ".";
-            currentDisplay.textContent = `${firstNum}`;
-        }
-        if (operator !== "" && !secondNum.includes(".") || secondNum === -secondNum) {
-            secondNum += ".";
-            currentDisplay.textContent = `${secondNum}`;
-        }
-    })
-}
-getDecimal();
+
+decimalPoint.addEventListener("click", () => {
+    if (operator === "" && !firstNum.includes(".") || firstNum === -firstNum) {
+        firstNum += ".";
+        currentDisplay.textContent = `${firstNum}`;
+    }
+    if (operator !== "" && !secondNum.includes(".") || secondNum === -secondNum || firstNum === -firstNum.includes(".")) {
+        secondNum += ".";
+        currentDisplay.textContent = `${secondNum}`;
+    }
+
+})
+
 
 
 for (let number of numBtn) {
@@ -88,6 +130,7 @@ function getFirstNum(num) {
     if (firstNum.length < 10) {
         firstNum += num;
         currentDisplay.textContent = firstNum;
+        getOperator();
     }
 }
 
@@ -101,14 +144,14 @@ function getSecondNum(num) {
 function getOperator() {
     for (let opChoice of operatorBtn) {
         opChoice.addEventListener("click", () => {
-            operator = opChoice.dataset.value;
-            console.log(operator);
-            isFirstNum = true;
-            previousDisplay.textContent = `${firstNum} ${operator}`;
+            if (isFirstNum = true) {
+                operator = opChoice.dataset.value;
+                console.log(operator);
+                previousDisplay.textContent = `${firstNum} ${operator}`;
+            }
         })
     }
 }
-getOperator();
 
 
 function calculate() {
@@ -127,40 +170,43 @@ function calculate() {
     } else if (operator === "÷") {
         result = firstNum / secondNum;
     }
-
+    firstNum = firstNum.toString();
+    secondNum = secondNum.toString();
 }
 
 
-
 function operate() {
-    equals.addEventListener("click", () => {
-        calculate();
-        currentValue = checkAnsLength().toString();
-        firstNum = firstNum.toString();
-        secondNum = secondNum.toString();
+    equals.addEventListener("click", (e) => {
 
-        if (currentValue.length > 11) {
-            previousDisplay.textContent = "";
-            currentDisplay.textContent = "Error";
 
-        } else if (firstNum !== "" && operator !== "" && secondNum !== "") {
-            previousDisplay.textContent = `${firstNum} ${operator} ${secondNum}`;
-            currentDisplay.textContent = currentValue;
+        if (firstNum !== "" && operator !== "" && secondNum !== "") {
+            calculate()
+            resultString = AnsLength().toString();
+            if (resultString.length > 11) {
+                previousDisplay.textContent = "";
+                currentDisplay.textContent = `= ${resultString.slice(0, 9)}...`;
+                disableBtn();
+                disabledColor();
 
+            } else if (firstNum !== "" && operator === "÷" && secondNum === "0") {
+                previousDisplay.textContent = "";
+                currentDisplay.textContent = "= Math.error";
+                disableBtn();
+                disabledColor();
+
+            } else {
+                previousDisplay.textContent = `${firstNum} ${operator} ${secondNum}`;
+                currentDisplay.textContent = `= ${resultString}`;
+            }
         }
-        if (secondNum === "0") {
-            previousDisplay.textContent = "";
-            currentDisplay.textContent = "Math.error";
-        }
-        firstNum = currentValue;
+        firstNum = resultString;
         secondNum = "";
-
     })
-
 }
 operate();
 
 
-function checkAnsLength() {
+const AnsLength = function () {
     return Math.round(result * 1000) / 1000;
 }
+AnsLength();
