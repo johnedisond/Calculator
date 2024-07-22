@@ -210,3 +210,59 @@ const AnsLength = function () {
     return Math.round(result * 1000) / 1000;
 }
 AnsLength();
+
+addEventListener("keydown", (e) => {
+    if (e.key === ".") {
+        decimalPoint.click()
+        decimalPoint.classList.add("press");
+        setTimeout(() => {
+            decimalPoint.classList.remove("press");
+        }, 100);
+
+    } else if (e.key === "Backspace") {
+        deleteLeft.click()
+        deleteLeft.classList.add("press");
+        setTimeout(() => {
+            deleteLeft.classList.remove("press");
+        }, 100);
+
+    } else if (e.key === "Enter") {
+        equals.click()
+        equals.focus();
+        equals.classList.add("pressfunc");
+        e.preventDefault();
+        equals.classList.remove("pressfunc");
+
+    } else if (e.key === "+") {
+        handleOperator("+");
+
+    } else if (e.key === "-") {
+        handleOperator("-");
+
+    } else if (e.key === "*") {
+        handleOperator("×");
+
+    } else if (e.key === "/") {
+        handleOperator("÷");
+
+    } else if (e.key >= "0" && e.key <= "9") {
+        handleOperand(e.key);
+    }
+})
+
+function handleOperator(operator) {
+    const opChoice = Array.from(operatorBtn).find(btn => btn.textContent === operator);
+    opChoice.click()
+    opChoice.focus();
+    opChoice.classList.add("pressfunc");
+    opChoice.classList.remove("pressfunc");
+}
+
+function handleOperand(nums) {
+    const numChoice = Array.from(numBtn).find(btn => btn.textContent === nums);
+    numChoice.click()
+    numChoice.classList.add("press");
+    setTimeout(() => {
+        numChoice.classList.remove("press");
+    }, 100);
+}

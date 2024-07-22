@@ -43,6 +43,7 @@ button {
     color: white;
     text-align: center;
     cursor: pointer;
+    outline: none;
 }
 
 .number,
@@ -70,7 +71,7 @@ button {
 }
 
 .operator:focus,
-.equal:focus {
+.equals:focus {
     background-color: hsl(39, 97%, 77%);
     color: black;
 }
@@ -99,4 +100,14 @@ button {
 .disableFunc {
     background-color: hsl(39, 80%, 85%);
     color: rgb(49, 49, 49);
+}
+
+.press {
+    background-color: hsl(0 0% 75%);
+    color: black;
+}
+
+.pressfunc {
+    background-color: hsl(0 0% 75%);
+    color: black;
 }
