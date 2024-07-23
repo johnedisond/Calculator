@@ -2,7 +2,7 @@
 
 This calculator is based on [Project: Calculator](https://www.theodinproject.com/lessons/foundations-calculator) of the Foundation Course of The Odin Project.
 
-Live preview [here](). <br/>
+Live preview [here](https://johnedisond.github.io/Calculator/). <br/>
 
 ![calculator sample](images/calculator%20sample.png)
 ![calculator sample 2](images/calculator%20sample%202.png) <br/>
